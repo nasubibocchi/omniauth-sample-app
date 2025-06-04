@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>認証テスト</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+  <div class="container mx-auto px-4 py-8 max-w-2xl">
+    <h1 class="text-4xl font-bold mb-8 text-center text-gray-800">🔐 認証テスト</h1>
+    
+    <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
+      <h2 class="text-2xl font-semibold mb-4"><%= @message %></h2>
+      
+      <% if user_signed_in? %>
+        <div class="bg-green-50 border border-green-200 rounded-lg p-4 mb-4">
+          <h3 class="text-lg font-semibold text-green-800 mb-3">ユーザー情報</h3>
+          <ul class="space-y-2">
+            <% @user_info.each do |key, value| %>
+              <li class="flex justify-between">
+                <span class="font-medium text-gray-700"><%= key.to_s.humanize %>:</span>
+                <span class="text-gray-900"><%= value %></span>
+              </li>
+            <% end %>
+          </ul>
+        </div>
+        
+        <div class="space-x-4 mb-4">
+          <form action="/users/sign_out" method="post" style="display: inline;">
+            <input type="hidden" name="_method" value="delete">
+            <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token if respond_to?(:form_authenticity_token) %>">
+            <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+              ログアウト
+            </button>
+          </form>
+          <a href="/users/edit" 
+             class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            プロフィール編集
+          </a>
+        </div>
+        
+        <!-- Google再認証テスト用ボタン -->
+        <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+          <h4 class="text-yellow-800 font-semibold mb-2">🔄 再認証テスト</h4>
+          <p class="text-yellow-700 text-sm mb-3">
+            Google再認証（prompt=login）をテストします。強制的にGoogleのログイン画面が表示されます。
+          </p>
+          <div class="space-x-2">
+            <a href="<%= google_reauth_path %>" 
+              class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded text-sm">
+              🔄 Google再認証
+            </a>
+            <a href="/users/auth/google_oauth2?prompt=consent" 
+               class="bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded text-sm">
+              ⚠️ 再同意（consent）
+            </a>
+            <a href="/users/auth/google_oauth2?prompt=select_account" 
+               class="bg-purple-500 hover:bg-purple-600 text-white font-bold py-2 px-4 rounded text-sm">
+              👤 アカウント選択
+            </a>
+          </div>
+        </div>
+      <% else %>
+        <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
+          <p class="text-blue-800 mb-4">以下の認証方法をテストしてください：</p>
+          
+          <div class="space-y-3">
+            <% if respond_to?(:user_google_omniauth_authorize_path) %>
+              <a href="<%= user_google_omniauth_authorize_path %>" 
+                 class="w-full bg-red-500 hover:bg-red-700 text-white font-bold py-3 px-4 rounded-lg flex items-center justify-center">
+                <svg class="w-5 h-5 mr-2" viewBox="0 0 24 24">
+                  <path fill="currentColor" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                  <path fill="currentColor" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                  <path fill="currentColor" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                  <path fill="currentColor" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                </svg>
+                Google認証 (named route)
+              </a>
+            <% else %>
+              <a href="/users/auth/google_oauth2" 
+                 class="w-full bg-red-500 hover:bg-red-700 text-white font-bold py-3 px-4 rounded-lg flex items-center justify-center">
+                <svg class="w-5 h-5 mr-2" viewBox="0 0 24 24">
+                  <path fill="currentColor" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                  <path fill="currentColor" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                  <path fill="currentColor" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                  <path fill="currentColor" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                </svg>
+                Google認証 (fallback)
+              </a>
+            <% end %>
+            
+            <% if respond_to?(:new_user_session_path) %>
+              <a href="<%= new_user_session_path %>" 
+                 class="w-full bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg block text-center">
+                メール/パスワードでログイン
+              </a>
+            <% else %>
+              <a href="/users/sign_in" 
+                 class="w-full bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg block text-center">
+                メール/パスワードでログイン
+              </a>
+            <% end %>
+            
+            <% if respond_to?(:new_user_registration_path) %>
+              <a href="<%= new_user_registration_path %>" 
+                 class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg block text-center">
+                新規登録
+              </a>
+            <% else %>
+              <a href="/users/sign_up" 
+                 class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg block text-center">
+                新規登録
+              </a>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="text-center text-gray-600 text-sm">
+      <p>Google OAuth認証のテストページです</p>
+    </div>
+  </div>
+</body>
+</html>

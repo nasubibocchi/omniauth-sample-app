@@ -1,0 +1,234 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+/* カスタムコンポーネント */
+@layer components {
+  .btn-primary {
+    @apply bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors;
+  }
+  
+  .btn-secondary {
+    @apply bg-gray-200 hover:bg-gray-300 text-gray-900 font-medium py-2 px-4 rounded-lg transition-colors;
+  }
+  
+  .card {
+    @apply bg-white rounded-lg shadow-sm border border-gray-200;
+  }
+  
+  .form-input {
+    @apply w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500;
+  }
+  
+  .form-label {
+    @apply block text-sm font-medium text-gray-700 mb-1;
+  }
+  
+  .badge {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+  }
+  
+  .badge-blue {
+    @apply bg-blue-100 text-blue-800;
+  }
+  
+  .badge-green {
+    @apply bg-green-100 text-green-800;
+  }
+  
+  .badge-yellow {
+    @apply bg-yellow-100 text-yellow-800;
+  }
+  
+  .badge-red {
+    @apply bg-red-100 text-red-800;
+  }
+  
+  .badge-purple {
+    @apply bg-purple-100 text-purple-800;
+  }
+  
+  .badge-gray {
+    @apply bg-gray-100 text-gray-800;
+  }
+}
+
+/* カスタムユーティリティ */
+@layer utilities {
+  .text-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  
+  .text-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: rgb(156 163 175) transparent;
+  }
+  
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background-color: rgb(156 163 175);
+    border-radius: 3px;
+  }
+}
+
+/* 星評価のスタイル */
+.star-rating {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.star-rating .star {
+  color: #d1d5db;
+  cursor: pointer;
+  font-size: 1.25rem;
+  transition: color 0.2s;
+}
+
+.star-rating .star.active,
+.star-rating .star:hover {
+  color: #fbbf24;
+}
+
+/* カスタムチェックボックス */
+.custom-checkbox {
+  appearance: none;
+  background-color: #fff;
+  border: 2px solid #d1d5db;
+  border-radius: 4px;
+  width: 1.25rem;
+  height: 1.25rem;
+  position: relative;
+  cursor: pointer;
+}
+
+.custom-checkbox:checked {
+  background-color: #3b82f6;
+  border-color: #3b82f6;
+}
+
+.custom-checkbox:checked::after {
+  content: '✓';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 0.875rem;
+  font-weight: bold;
+}
+
+/* プログレスバー */
+.progress-bar {
+  background-color: #e5e7eb;
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background-color: #3b82f6;
+  transition: width 0.3s ease;
+}
+
+/* カードホバー効果 */
+.card-hover {
+  transition: all 0.2s ease;
+}
+
+.card-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* ドロップダウンアニメーション */
+.dropdown-menu {
+  transform: translateY(-10px);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.2s ease;
+}
+
+.dropdown-menu.show {
+  transform: translateY(0);
+  opacity: 1;
+  visibility: visible;
+}
+
+/* フェードインアニメーション */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.5s ease-out;
+}
+
+/* レスポンシブテーブル */
+.table-responsive {
+  overflow-x: auto;
+}
+
+.table-responsive table {
+  min-width: 600px;
+}
+
+/* フォーカス状態の改善 */
+.focus-visible:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+/* カスタムスクロールバー（Webkit） */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* 印刷時のスタイル調整 */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  
+  .print-break {
+    page-break-after: always;
+  }
+}
